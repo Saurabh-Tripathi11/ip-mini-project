@@ -66,6 +66,33 @@ An AI-powered e-commerce web application built with Spring Boot, Thymeleaf, and 
 
 > The app comes pre-loaded with 6 sample products. Start shopping immediately!
 
+## 🐳 Run with Docker
+
+No Java or Maven needed — just [Docker](https://docs.docker.com/get-docker/).
+
+### Build the image
+
+```bash
+docker build -t shopease .
+```
+
+### Run the container
+
+```bash
+# Without AI features
+docker run -p 8080:8080 shopease
+
+# With AI recommendations (pass your Groq API key)
+docker run -p 8080:8080 -e GROQ_API_KEY=your_api_key_here shopease
+```
+
+Then open [http://localhost:8080](http://localhost:8080).
+
+> **Tip:** To run in the background, add the `-d` flag:
+> ```bash
+> docker run -d -p 8080:8080 -e GROQ_API_KEY=your_api_key_here shopease
+> ```
+
 ## 📁 Project Structure
 
 ```

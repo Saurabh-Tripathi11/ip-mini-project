@@ -1,0 +1,12 @@
+target/
+.git/
+.gitattributes
+.mvn/
+*.md
+*.cmd
+mvnw
+mvnw.cmd
+.idea/
+*.iml
+.vscode/
+.DS_Store
