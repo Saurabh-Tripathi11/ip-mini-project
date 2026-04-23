@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase — Your Smart Shopping Destination</title>
+    <meta name="description" content="ShopEase - Browse premium electronics and lifestyle products with AI-powered recommendations.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar-amazon">
+    <div class="navbar-top" style="max-width:1500px;margin:0 auto;">
+        <a href="/" class="brand-logo">
+            <span class="logo-accent">Shop</span>Ease
+        </a>
+        <div class="search-bar">
+            <input type="text" id="groqQuery" placeholder="Search products or ask AI for recommendations..."
+                   onkeypress="if(event.key==='Enter') askGroq()">
+            <button type="button" onclick="askGroq()" id="groqBtn"><i class="bi bi-search"></i></button>
+        </div>
+        <div class="nav-actions">
+            <a href="/" class="nav-btn">
+                <span class="nav-btn-label">Hello,</span>
+                <span class="nav-btn-value">Shop Now</span>
+            </a>
+            <a href="/orders" class="nav-btn">
+                <span class="nav-btn-label">Returns</span>
+                <span class="nav-btn-value">& Orders</span>
+            </a>
+            <a href="/cart" class="nav-btn nav-btn-cart">
+                <span class="cart-icon">
+                    <i class="bi bi-cart3"></i>
+                    <span class="cart-count" th:if="${cartItemCount != null && cartItemCount > 0}"
+                          th:text="${cartItemCount}">0</span>
+                </span>
+                <span class="nav-btn-value">Cart</span>
+            </a>
+        </div>
+    </div>
+    <div class="sub-nav">
+        <div style="max-width:1500px;margin:0 auto;display:flex;gap:2px;">
+            <a href="/"><i class="bi bi-list me-1"></i> All</a>
+            <a href="/">Electronics</a>
+            <a href="/">Lifestyle</a>
+            <a href="/">Best Sellers</a>
+            <a href="/">New Arrivals</a>
+            <a href="/orders">My Orders</a>
+            <a href="/cart">Shopping Cart</a>
+        </div>
+    </div>
+</nav>
+
+<div class="main-content">
+
+    <!-- Alerts -->
+    <div th:if="${successMessage}" class="alert-amazon alert-success">
+        <i class="bi bi-check-circle-fill"></i>
+        <span th:text="${successMessage}"></span>
+    </div>
+    <div th:if="${errorMessage}" class="alert-amazon alert-error">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <!-- AI Section -->
+    <div class="ai-section">
+        <div class="ai-title">
+            <i class="bi bi-stars" style="color: var(--accent-orange);"></i>
+            Ask Groq for Recommendations
+        </div>
+        <div class="ai-subtitle">Get personalized product suggestions powered by AI</div>
+        <div id="groqSpinner" class="ai-spinner">
+            <div class="spinner-border spinner-border-sm me-2" role="status"
+                 style="width:16px;height:16px;border-width:2px;"></div>
+            Thinking...
+        </div>
+        <div id="groqResponse" class="ai-response" style="display: none;"></div>
+    </div>
+
+    <!-- Products Header -->
+    <div class="section-header">
+        <h1>Today's Picks for You</h1>
+        <p>Explore our curated collection of electronics &amp; lifestyle essentials</p>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid">
+        <div class="product-card" th:each="product : ${products}">
+            <div class="card-img-wrap">
+                <img th:src="${product.imageUrl}" th:alt="${product.name}"
+                     onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop'">
+            </div>
+            <div class="card-body">
+                <div class="product-title" th:text="${product.name}">Product Name</div>
+                <div class="product-desc" th:text="${product.description}">Description</div>
+                <div class="product-price">
+                    <span class="price-symbol">₹</span><span th:text="${#numbers.formatDecimal(product.price, 1, 0)}">0</span>
+                </div>
+                <div class="stock-info"
+                     th:classappend="${product.stockQuantity > 10 ? 'in-stock' : 'low-stock'}"
+                     th:text="${product.stockQuantity > 10 ? 'In stock' : 'Only ' + product.stockQuantity + ' left — order soon'}">
+                    In stock
+                </div>
+                <form th:action="@{/cart/add}" method="post">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="btn-add-cart">
+                        <i class="bi bi-cart-plus me-1"></i> Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer-amazon">
+    ShopEase &copy; 2026 — AI-Powered Smart Shopping
+</footer>
+
+<script>
+    function askGroq() {
+        const query = document.getElementById('groqQuery').value.trim();
+        if (!query) return;
+
+        const spinner = document.getElementById('groqSpinner');
+        const responseDiv = document.getElementById('groqResponse');
+        const btn = document.getElementById('groqBtn');
+
+        spinner.style.display = 'block';
+        responseDiv.style.display = 'none';
+        btn.disabled = true;
+
+        fetch('/recommendations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: query })
+        })
+        .then(res => res.json())
+        .then(data => {
+            spinner.style.display = 'none';
+            responseDiv.style.display = 'block';
+            let html = data.recommendation
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>');
+            responseDiv.innerHTML = '<i class="bi bi-robot" style="color: var(--accent-orange); margin-right: 6px;"></i>' + html;
+            btn.disabled = false;
+        })
+        .catch(err => {
+            spinner.style.display = 'none';
+            responseDiv.style.display = 'block';
+            responseDiv.innerHTML = '<i class="bi bi-exclamation-triangle" style="color: var(--deal-red); margin-right: 6px;"></i> Error connecting to AI. Please try again.';
+            btn.disabled = false;
+        });
+    }
+</script>
+</body>
+</html>

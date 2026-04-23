@@ -1,0 +1,14 @@
+com/shopease/ShoppingCartApplication.class
+com/shopease/controller/ProductController.class
+com/shopease/service/OrderService.class
+com/shopease/service/ProductService.class
+com/shopease/model/Product.class
+com/shopease/repository/ProductRepository.class
+com/shopease/repository/OrderRepository.class
+com/shopease/controller/CartController.class
+com/shopease/model/CartItem.class
+com/shopease/service/GroqService.class
+com/shopease/model/Order.class
+com/shopease/controller/OrderController.class
+com/shopease/config/DataLoader.class
+com/shopease/service/CartService.class

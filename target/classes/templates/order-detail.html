@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details | ShopEase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar-amazon">
+    <div class="navbar-top" style="max-width:1500px;margin:0 auto;">
+        <a href="/" class="brand-logo"><span class="logo-accent">Shop</span>Ease</a>
+        <div class="search-bar">
+            <input type="text" placeholder="Search ShopEase...">
+            <button type="button"><i class="bi bi-search"></i></button>
+        </div>
+        <div class="nav-actions">
+            <a href="/" class="nav-btn"><span class="nav-btn-label">Hello,</span><span class="nav-btn-value">Shop Now</span></a>
+            <a href="/orders" class="nav-btn"><span class="nav-btn-label">Returns</span><span class="nav-btn-value">& Orders</span></a>
+            <a href="/cart" class="nav-btn nav-btn-cart">
+                <span class="cart-icon"><i class="bi bi-cart3"></i>
+                    <span class="cart-count" th:if="${cartItemCount != null && cartItemCount > 0}" th:text="${cartItemCount}">0</span>
+                </span>
+                <span class="nav-btn-value">Cart</span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="main-content">
+
+    <a href="/orders" class="btn-back" style="margin-bottom:16px;"><i class="bi bi-arrow-left me-1"></i> Back to Orders</a>
+
+    <div class="order-detail-card">
+        <h2>
+            <span>Order <span th:text="'#' + ${order.id}">#1</span></span>
+            <span class="status-badge"
+                  th:classappend="${order.status == 'CONFIRMED' ? 'status-confirmed' : (order.status == 'PROCESSING' ? 'status-processing' : 'status-delivered')}"
+                  th:text="${order.status}">Status</span>
+        </h2>
+
+        <div class="order-meta">
+            <div class="meta-group">
+                <small>ORDER DATE</small>
+                <div class="meta-value" th:text="${#temporals.format(order.orderDate, 'dd MMMM yyyy, hh:mm a')}">Date</div>
+            </div>
+            <div class="meta-group">
+                <small>TOTAL AMOUNT</small>
+                <div class="meta-value price">₹<span th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)}">0.00</span></div>
+            </div>
+        </div>
+
+        <div class="items-list">
+            <h4><i class="bi bi-box-seam me-1"></i> Items Ordered</h4>
+            <div th:each="itemText : ${order.itemsSummary.split('\\|')}" class="item-row">
+                <i class="bi bi-check-circle-fill"></i>
+                <span th:text="${itemText.trim()}">Item</span>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:20px;">
+            <a href="/orders" class="btn-back"><i class="bi bi-arrow-left me-1"></i> All Orders</a>
+            <a href="/" class="btn-shop-more"><i class="bi bi-bag-plus me-1"></i> Shop More</a>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-amazon">ShopEase &copy; 2026 — AI-Powered Smart Shopping</footer>
+</body>
+</html>

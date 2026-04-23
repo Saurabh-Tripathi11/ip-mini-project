@@ -1,0 +1,14 @@
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/ShoppingCartApplication.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/config/DataLoader.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/controller/CartController.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/controller/OrderController.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/controller/ProductController.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/model/CartItem.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/model/Order.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/model/Product.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/repository/OrderRepository.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/repository/ProductRepository.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/service/CartService.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/service/GroqService.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/service/OrderService.java
+/Users/saurabhtripathi/Desktop/Saurabh/tcet/sem 4/ip project/ip mini project/src/main/java/com/shopease/service/ProductService.java
